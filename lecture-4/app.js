@@ -1,21 +1,28 @@
 const express = require('express');
 const app = express();
 
+app.use(express.json());
+
+const products = [
+  {
+    id: 1,
+    name: 'T-Shirt',
+    price: '10.99'
+  },
+  {
+    id: 1,
+    name: 'T-Shirt',
+    price: '10.99'
+  }
+];
+
 app
-  .get('/', (req, res) => {
-    res.send({
-      x: 'y',
-      z: [12, 3, 4, 6],
-      t: true
-    });
+  .get('/products', (req, res) => {
+    res.send(products);
   })
-  .post('/hehe', (req, res) => {
-    console.log('NA RUTATA /hehe SE ISPRATI POST REQUEST');
-    res.send({
-      x: 'y',
-      z: [12, 3, 4, 6],
-      t: true
-    });
+  .post('/products', (req, res) => {
+    products.push(req.body);
+    res.send(products);
   })
 
 app.listen('3003', () => {
