@@ -16,9 +16,14 @@ let products = [
   }
 ];
 
+
 // facebook.com/boban.sugareski
 // facebook.com/latas.69
 // route parameter
+app
+  .get('/products', (req, res) => {
+    res.send(products);
+  })
 
 app
   .get('/products', (req, res) => {
@@ -44,16 +49,32 @@ app
  
     res.send(product);
   })
+  .post('/products', (req, res) => {
+    products.push(req.body);
+    res.send(products);
+  })
+  .patch('/products/:id', (req, res) => {
+    products.forEach(product => {
+      if (product.id == req.params.id) {
+        if (req.body.name) {
+          product.name = req.body.name;
+        }
+
+        if (req.body.price) {
+          product.price = req.body.price;
+        }
+      }
+    });
+
+    res.send(products);
+  })
   .delete('/products/:id', (req, res) => {
     const filteredProducts = products.filter(product => product.id != req.params.id);
     products = filteredProducts;
 
     res.send(products);
   })
-  .post('/products', (req, res) => {
-    products.push(req.body);
-    res.send(products);
-  })
+  
 
 app.listen('3003', () => {
   console.log('App started on port 3003...');
