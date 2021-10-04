@@ -8,6 +8,7 @@ const controller = require('../controllers/employees');
 
 router.get('/', controller.getAll)
       .get('/create', controller.getCreate)
+      .get('/:id', controller.getUpdate)
       .post('/', controller.postCreate)
 
 module.exports = router;

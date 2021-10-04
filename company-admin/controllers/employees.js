@@ -9,6 +9,11 @@ module.exports = {
   getCreate: (req, res) => {
     res.render('employees/create');
   },
+  getUpdate: async (req, res) => {
+    const employee = await Employee.findById(req.params.id);
+
+    res.render('employees/update', { employee: employee })
+  },
   postCreate: async (req, res) => {
     req.body.email += '@north-company-admin.com';
     await Employee.create(req.body);
