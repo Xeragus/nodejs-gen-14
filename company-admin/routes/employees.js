@@ -1,19 +1,13 @@
 var express = require('express');
 var router = express.Router();
+const controller = require('../controllers/employees');
 
-const employees = [];
+/**
+ * MVC: Model View Controller
+ */
 
-router
-      .get('/', (req, res) => {
-        res.render('employees/index', { employees: employees })
-      })
-      .get('/create', (req, res) => {
-        res.render('employees/create');
-      })
-      .post('/', (req, res) => {
-        employees.push(req.body);
-
-        res.redirect('/employees');
-      })
+router.get('/', controller.getAll)
+      .get('/create', controller.getCreate)
+      .post('/', controller.postCreate)
 
 module.exports = router;
