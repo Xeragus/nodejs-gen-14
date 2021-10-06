@@ -1,5 +1,9 @@
 const Employee = require('../models/employee');
 
+/**
+ * Vo kontrolerite ja cuvame biznis logikata.
+ */
+
 module.exports = {
   getAll: async (req, res) => {
     const employees = await Employee.find();
@@ -15,9 +19,19 @@ module.exports = {
     res.render('employees/update', { employee: employee })
   },
   postCreate: async (req, res) => {
-    req.body.email += '@north-company-admin.com';
-    await Employee.create(req.body);
+    try {
+      req.body.email += '@north-company-admin.com';
 
-    res.redirect('/employees');
+      await Employee.create(req.body);
+
+      res.redirect('/employees');
+    } catch (error) {
+      res.render('employees/create', { error: error.message })
+    }
+  },
+  delete: async (req, res) => {
+    await Employee.findByIdAndDelete(req.params.id);
+
+    res.send('ok');
   }
 }

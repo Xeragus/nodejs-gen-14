@@ -17,7 +17,10 @@
         <td><%= employee.last_name %></td>
         <td><%= employee.email %></td>
         <td>$<%= employee.salary %></td>
-        <td><a href="/employees/<%= employee._id %>" class="btn btn-warning">Update</a></td>
+        <td>
+          <a href="/employees/<%= employee._id %>" class="btn btn-warning"><i class="bi bi-pencil-fill"></i></a>
+          <a href="javascript:;" onclick="deleteEmployee(`<%= employee._id %>`)" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+        </td>
       </tr>
     <% }) %>
   </tbody>
