@@ -7,6 +7,7 @@
       <th scope="col">Last Name</th>
       <th scope="col">Email</th>
       <th scope="col">Monthly Salary</th>
+      <th scope="col">Job Title</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -17,6 +18,7 @@
         <td><%= employee.last_name %></td>
         <td><%= employee.email %></td>
         <td>$<%= employee.salary %></td>
+        <td style="text-transform: capitalize;"><%= employee.job_title %></td>
         <td>
           <a href="/employees/<%= employee._id %>" class="btn btn-warning"><i class="bi bi-pencil-fill"></i></a>
           <a href="javascript:;" onclick="deleteEmployee(`<%= employee._id %>`)" class="btn btn-danger"><i class="bi bi-trash"></i></a>
