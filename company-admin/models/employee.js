@@ -15,6 +15,10 @@ const employeeSchema = mongoose.Schema({
   },
   salary: {
     type: Number,
+  },
+  job_title: {
+    type: String,
+    required: ['Каква порака сакаме ние']
   }
 });
 
