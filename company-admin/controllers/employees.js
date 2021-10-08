@@ -1,4 +1,5 @@
 const Employee = require('../models/employee');
+const JobTitle = require('../models/job-title');
 
 /**
  * Vo kontrolerite ja cuvame biznis logikata.
@@ -6,12 +7,15 @@ const Employee = require('../models/employee');
 
 module.exports = {
   getAll: async (req, res) => {
-    const employees = await Employee.find();
+    const employees = await Employee.find().populate('job_title');
+    console.log(employees);
 
     res.render('employees/index', { employees: employees });
   },
-  getCreate: (req, res) => {
-    res.render('employees/create');
+  getCreate: async (req, res) => {
+    const jobTitles = await JobTitle.find(); 
+
+    res.render('employees/create', { jobTitles: jobTitles });
   },
   getUpdate: async (req, res) => {
     const employee = await Employee.findById(req.params.id);

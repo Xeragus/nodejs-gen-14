@@ -17,8 +17,8 @@ const employeeSchema = mongoose.Schema({
     type: Number,
   },
   job_title: {
-    type: String,
-    required: ['Каква порака сакаме ние']
+    type: mongoose.Types.ObjectId,
+    ref: 'job_title'
   }
 });
 
