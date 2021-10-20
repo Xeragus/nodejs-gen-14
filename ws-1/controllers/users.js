@@ -25,17 +25,48 @@ module.exports = {
       });
     }
   },
-  login: (req, res) => {
-    /**
-     * Route for logging in an existing user
-     * 1. Vo req.body gi primame podatocite prateni po ovoj HTTP request
-     * 2. Vo podatocite: email i password
-     * 3. So ovie podatoci treba da proverime dali navistina postoi ovoj korisnik
-     * 3.1 Ako postoi, da mu ispratime bilo kakov response vo koj kje mu kazeme "OK!"
-     * 3.2 Ako ne postoi, da mu ispratime bilo kakov response vo koj kje mu kazeme "Celadae!"
-     * 
-     * Resenie:
-     * Kje si kazete vie.
-     */
+  login: async (req, res) => {
+    try {
+      /**
+       * Problem: Dali postoi korisnik so dadeni email i password
+       * 1. Proveruvame po email
+       * 1.1. Ako toj email ne postoi, frli greska
+       * 1.2. Ako toj email postoi, prodolzi ponatamu (ne pravi nisto)
+       * ..
+       * do 2 stigame samo preku 1.2.
+       * ..
+       * 2. Proveruvame po password
+       * 2.1. Password-ot na korisnikot koj sme go nasle pri cekor 1 ne se sovpagja so password-ot od request-ot
+       *      i vrakjame greska
+       * 2.2. Password-ite se sovpagjaat, znaci prodolzi ponatamu (ne pravi nisto)
+       */
+
+      const user = await User.findOne({ email: req.body.email });
+      if (!user) {
+        throw new Error('Invalid credentials');
+      }
+
+      if (!bcrypt.compareSync(req.body.password, user.password)) {
+        throw new Error('Invalid credentials');
+      }
+      // dali dokolku kodot stigne so izvrsuvanje na ovaa linija mozeme
+      // da bideme sigurni deka postoi korisnik so dadenite email i pass
+
+      /**
+       * Da, mozeme da bideme sigurni, zatoa sto ako ne postoel korisnik so dadeniot email, programata
+       * kje zavrsela na linija 46, i ako password-ot na toj korisnik ne bil ist so dadeniot password,
+       * programata kje zavrsela na linija 50.
+       */
+
+      res.send({
+        error: false,
+        message: 'User logged in'
+      })
+    } catch (error) {
+      res.send({
+        error: true,
+        message: error.message
+      });
+    }
   }
 }
