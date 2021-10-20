@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
   register: async (req, res) => {
@@ -58,10 +59,25 @@ module.exports = {
        * programata kje zavrsela na linija 50.
        */
 
+      // JWT Auth: JSON Web Token Authentication
+
+      /**
+       * 1. Treba da go enkodirame id-to i email na korisnikot i vreme na istekuvanje na tokenot vo samiot token
+       */
+      const payload = {
+        id: user._id,
+        email: user.email
+      }
+
+      const token = jwt.sign(payload, 'DSAKPOD(*(*(*##3232', {
+        expiresIn: '50m'
+      });
+
       res.send({
         error: false,
-        message: 'User logged in'
-      })
+        message: 'User logged in',
+        token: token
+      });
     } catch (error) {
       res.send({
         error: true,
