@@ -1,33 +1,9 @@
 var express = require('express');
 var router = express.Router();
+const controller = require('../controllers/users');
 
-router.post('/', (req, res) => {
-        /** 
-         * Route for registering a user
-         * 1. Vo req.body gi primame podatocite prateni po ovoj HTTP request
-         * 2. Vo podatocite kje ima: ime, prezime, email, password
-         * 3. Tie podatoci, na ovoj endpoint kje gi zacuvame kako nov korisnicki zapis (new user record)
-         * 
-         * Resenie:
-         * 0. Da se povrzeme vo baza preku app.js
-         * 1. Da se napravi User model
-         * 2. Da se povika funkcija za zapisuvanje nov zapis od User model-ot (users kolekcijata)
-         * 3. Da se vrati bilo kakov response
-         */
-      })
-      .post('/', (req, res) => {
-        /**
-         * Route for logging in an existing user
-         * 1. Vo req.body gi primame podatocite prateni po ovoj HTTP request
-         * 2. Vo podatocite: email i password
-         * 3. So ovie podatoci treba da proverime dali navistina postoi ovoj korisnik
-         * 3.1 Ako postoi, da mu ispratime bilo kakov response vo koj kje mu kazeme "OK!"
-         * 3.2 Ako ne postoi, da mu ispratime bilo kakov response vo koj kje mu kazeme "Celadae!"
-         * 
-         * Resenie:
-         * Kje si kazete vie.
-         */
-      })
+router.post('/register', controller.register)
+      .post('/login', controller.login);
 
 module.exports = router;
 
