@@ -1,6 +1,38 @@
 const Post = require('../models/post');
 
 module.exports = {
+  all: async (req, res) => {
+    try {
+      const posts = await Post.find().populate('user');
+
+      res.send({
+        error: false,
+        message: 'List of all posts from the database',
+        posts: posts
+      })
+    } catch (error) {
+      res.send({
+        error: true,
+        message: error.msg
+      });
+    }
+  },
+  getByUser: async (req, res) => {
+    try {
+      const posts = await Post.find({ user: req.params.id })
+
+      res.send({
+        error: false,
+        message: `All posts for user with id #${req.params.id}`,
+        posts: posts
+      })
+    } catch (error) {
+      res.send({
+        error: true,
+        message: error.msg
+      });
+    }
+  },
   create: async (req, res) => {
     try {
       const post = await Post.create(req.body);

@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const controller = require('../controllers/posts');
-
-router.post('/', controller.create);
+// GET /posts/users/:id
+router.get('/', controller.all)
+      .get('/users/:id', controller.getByUser)
+      .post('/', controller.create);
 
 module.exports = router;
