@@ -2,6 +2,8 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+require('dotenv').config();
+
 module.exports = {
   register: async (req, res) => {
     try {
@@ -43,6 +45,8 @@ module.exports = {
        */
 
       const user = await User.findOne({ email: req.body.email });
+
+      // Negative checks
       if (!user) {
         throw new Error('Invalid credentials');
       }
@@ -50,13 +54,14 @@ module.exports = {
       if (!bcrypt.compareSync(req.body.password, user.password)) {
         throw new Error('Invalid credentials');
       }
+
       // dali dokolku kodot stigne so izvrsuvanje na ovaa linija mozeme
       // da bideme sigurni deka postoi korisnik so dadenite email i pass
 
       /**
        * Da, mozeme da bideme sigurni, zatoa sto ako ne postoel korisnik so dadeniot email, programata
-       * kje zavrsela na linija 46, i ako password-ot na toj korisnik ne bil ist so dadeniot password,
-       * programata kje zavrsela na linija 50.
+       * kje zavrsela na linija 49, i ako password-ot na toj korisnik ne bil ist so dadeniot password,
+       * programata kje zavrsela na linija 53.
        */
 
       // JWT Auth: JSON Web Token Authentication
@@ -69,7 +74,7 @@ module.exports = {
         email: user.email
       }
 
-      const token = jwt.sign(payload, 'DSAKPOD(*(*(*##3232', {
+      const token = jwt.sign(payload, process.env.AUTH_SECRET, {
         expiresIn: '50m'
       });
 
@@ -86,3 +91,7 @@ module.exports = {
     }
   }
 }
+
+/** ENV files
+ * Files koi vo sebe imaat environment variables
+ */
