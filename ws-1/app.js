@@ -7,12 +7,12 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
 
-console.log(process.env.AUTH_SECRET)
-console.log('hehe');
 var app = express();
 
-console.log(process.env.AUTH_SECRET)
-mongoose.connect('mongodb://localhost:27017/gen-14-ws');
+require('dotenv').config();
+
+// mongoose.connect('mongodb://localhost:27017/gen-14-ws');
+mongoose.connect(`mongodb+srv://bobz:${process.env.MONGODB_PASSWORD}@cluster0.ngbhd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`);
 
 app.use(logger('dev'));
 app.use(express.json());
