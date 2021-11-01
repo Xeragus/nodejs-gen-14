@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const Sentiment = require('../models/sentiment');
 
 module.exports = {
   all: async (req, res) => {
@@ -9,6 +10,22 @@ module.exports = {
         error: false,
         message: 'List of all posts from the database for you my dear',
         posts: posts
+      });
+    } catch (error) {
+      res.send({
+        error: true,
+        message: error.message
+      });
+    }
+  },
+  getByID: async (req, res) => {
+    try {
+      const post = await Post.findById(req.params.id).populate('comments').populate('sentiments');
+
+      res.send({
+        error: false,
+        message: `Details about post with id #${req.params.id}`,
+        post: post
       });
     } catch (error) {
       res.send({
@@ -49,5 +66,22 @@ module.exports = {
         message: error.message
       });
     }
+  },
+  sentiment: async (req, res) => {
+    console.log(req.body);
+    const sentiment = await Sentiment.create({
+      emoji: req.body.emoji,
+      user: req.user.id,
+      post: req.params.id
+    })
+    const post = await Post.findByIdAndUpdate(req.params.id, {
+      $push: {
+        sentiments: sentiment._id
+      }
+    });
+
+    res.send({
+      post: post
+    })
   }
 }
