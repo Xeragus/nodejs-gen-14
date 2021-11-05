@@ -10,8 +10,8 @@ let clientSecret = process.env.PAYPAL_CLIENT_SECRET;
 let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
 let client = new paypal.core.PayPalHttpClient(environment);
 
-const captureOrder = async (orderId) => {
-  request = new paypal.orders.OrdersCaptureRequest(orderId);
+const captureOrder = async (authorizationId) => {
+  request = new paypal.payments.AuthorizationsCaptureRequest(authorizationId);
   request.requestBody({});
   console.log(request)
   // Call API with your client and get a response for your call
@@ -21,4 +21,4 @@ const captureOrder = async (orderId) => {
   console.log(`Capture: ${JSON.stringify(response.result)}`);
 }
 
-captureOrder('116855279S192391W'); 
+captureOrder('9B385489WC905992X');
