@@ -22,3 +22,10 @@ let authorize = async function(orderId) {
 }
 
 authorize('9P657957TE938041G');
+
+/**
+ * POST /authorize ruta za avtorizacija na odnapred approve-nat order
+ * - edinstveno nesto sto mu treba na ovoj kod kako dinamicki parametar a id na narackata (order id)
+ * - moznosti za implementacija: route params, query params i req body
+ * - vo response-ot ovoj endpoint treba da vrati id na authorization
+ */
