@@ -1,5 +1,7 @@
 const paypal = require('@paypal/checkout-server-sdk');
 const client = require('../utilities/paypal/client');
+const Payment = require('../models/payment');
+const Transaction = require('../models/transaction');
 
 module.exports = {
   create: async (req, res) => {
@@ -43,12 +45,51 @@ module.exports = {
     request.requestBody({});
     let response = await client.execute(request);
 
+    let authorization = response.result.purchase_units[0].payments.authorizations[0];
+
+    const payment = await Payment.create({
+      user: req.user.id,
+      status: 'authorized',
+      delivery_address: req.body.delivery_address
+    })
+
+    const transaction = await Transaction.create({
+      amount: authorization.amount.value,
+      payment: payment,
+      type: 'authorization',
+      external_reference: authorization.id,
+      processor_response: JSON.stringify(response.result)
+    })
+
     console.log(request);
     console.log(response);
 
     res.status(response.statusCode)
        .send({
-          authorization_id: response.result.purchase_units[0].payments.authorizations[0].id
+          transaction: transaction
+       })
+  },
+  void: async (req, res) => {
+    let transaction = await Transaction.findOne({ payment: req.params.id, type: 'authorization' });
+    const request = new paypal.payments.AuthorizationsVoidRequest(transaction.external_reference);
+    let response = await client.execute(request);
+
+    transaction = await Transaction.create({
+      amount: transaction.amount,
+      payment: transaction.payment,
+      type: 'void',
+      external_reference: transaction.external_reference,
+      processor_response: JSON.stringify(response)
+    })
+
+    await Payment.findByIdAndUpdate(req.params.id, { status: 'voided' });
+
+    console.log(request);
+    console.log(response);
+
+    res.status(response.statusCode)
+       .send({
+          transaction: transaction
        })
   }
 };
