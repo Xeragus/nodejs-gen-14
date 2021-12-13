@@ -55,6 +55,9 @@ module.exports = {
     }
   },
   create: async (req, res) => {
+    console.log('stiga');
+    console.log(req.file);
+    console.log(req.body);
     try {
       req.body.user = req.user.id;
       const post = await Post.create(req.body);
