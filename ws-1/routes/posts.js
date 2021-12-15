@@ -9,7 +9,7 @@ require('dotenv').config();
 router.get('/', controller.all)
       .get('/:id', controller.getByID)
       .get('/users/:id', controller.getByUser)
-      .post('/', upload.single('file'), jwt({ secret: process.env.AUTH_SECRET, algorithms: ['HS256'] }), controller.create)
+      .post('/', upload.single('image'), jwt({ secret: process.env.AUTH_SECRET, algorithms: ['HS256'] }), controller.create)
       .post('/:id/sentiment', jwt({ secret: process.env.AUTH_SECRET, algorithms: ['HS256'] }), controller.sentiment)
 
 module.exports = router;

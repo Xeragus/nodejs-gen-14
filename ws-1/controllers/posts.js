@@ -55,13 +55,13 @@ module.exports = {
     }
   },
   create: async (req, res) => {
-    console.log('stiga');
     console.log(req.file);
-    console.log(req.body);
+
     try {
       req.body.user = req.user.id;
+      req.body.image = `images/${req.file.filename}`
       const post = await Post.create(req.body);
-
+      console.log(post);
       res.status(201).send({
         error: false,
         message: `User with id #${ req.body.user } has just created a new post!`,

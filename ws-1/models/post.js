@@ -24,7 +24,10 @@ const postSchema = mongoose.Schema({
       type: mongoose.Types.ObjectId,
       ref: 'sentiment'
     }
-  ]
+  ],
+  image: {
+    type: String
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('post', postSchema)

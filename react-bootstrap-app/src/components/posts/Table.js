@@ -1,8 +1,6 @@
-import Navbar from 'react-bootstrap/Navbar';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
 import Table from 'react-bootstrap/Table';
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -33,7 +31,7 @@ function App() {
             posts.map(post => {
               return (
                 <tr key={post._id}>
-                  <td>{ post.title }</td>
+                  <td><Link to={`/posts/${post._id}`}>{ post.title }</Link></td>
                   <td>{ post.content }</td>
                   <td>hhh</td>
                 </tr>

@@ -1,28 +1,38 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Nav from 'react-bootstrap/Nav';
-import Table from 'react-bootstrap/Table';
+import Image from 'react-bootstrap/Image';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
   const [title, setTitle] = useState(null);
   const [content, setContent] = useState(null);
+  const [image, setImage] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxN2MzZDliYzBiYjMyNTg2ZTk3YTBhMyIsImVtYWlsIjoia29zdGFAdGVzdC5jb20iLCJpYXQiOjE2Mzk0MjU1MDIsImV4cCI6MTYzOTQyODUwMn0.xalZC5oHYMo9otvplCnAsRZzCNolMEYbbnXBmMUMOKQ'
+    let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxN2MzZDliYzBiYjMyNTg2ZTk3YTBhMyIsImVtYWlsIjoia29zdGFAdGVzdC5jb20iLCJpYXQiOjE2Mzk1OTU3MjYsImV4cCI6MTYzOTU5ODcyNn0.1Btdkqz2gZoPhMCE8SXahY5uGHczIrlt0k3AC-MYVsM'
 
-    fetch('http://localhost:3001/posts', {
+    let formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('image', image);
+
+    axios({
       method: 'post',
-      body: JSON.stringify({
-        title: title,
-        content: content
-      }),
+      url: 'http://localhost:3001/posts',
+      data: formData,
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
       }
+    })
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      console.log(err);
     })
   }
   
@@ -39,8 +49,10 @@ function App() {
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>Image</Form.Label>
-          <Form.Control type="file" />
+          <Form.Control type="file" onChange={(e) => { setImage(e.target.files[0]) }} />
         </Form.Group>
+        
+        {/* <Image src="http://localhost:3001/${post.image_url}" rounded /> */}
         <Button onClick={handleSubmit} variant="primary" type="submit">
           Submit
         </Button>
